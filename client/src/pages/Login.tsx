@@ -9,7 +9,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+} from "@/features/api/authApi";
+import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const Login = () => {
   const [loginInput, setLoginInput] = useState({ email: "", password: "" });
@@ -19,7 +25,25 @@ const Login = () => {
     password: "",
   });
 
-  const handleInputChange = (e , type) => {
+  const [
+    registerUser,
+    {
+      data: registerData,
+      error: registerError,
+      isLoading: registerIsLoading,
+      isSuccess: registerIsSuccess,
+    },
+  ] = useRegisterUserMutation();
+  const [
+    loginUser,
+    {
+      data: loginData,
+      error: loginError,
+      isLoading: loginIsLoading,
+      isSuccess: loginIsSuccess,
+    },
+  ] = useLoginUserMutation();
+  const handleInputChange = (e, type) => {
     const { name, value } = e.target;
     if (type === "signup") {
       setSignupInput({ ...signupInput, [name]: value });
@@ -28,10 +52,28 @@ const Login = () => {
     }
   };
 
-  const handleSubmit =(type)=>{
-    const inputData = type === "signup"? signupInput : loginInput
-    console.log(inputData)
+  const handleSubmit = async(type) => {
+    const inputData = type === "signup" ? signupInput : loginInput;
+    const action = type === "signup"?registerUser:loginUser;
+    await action(inputData);
+
   };
+  useEffect(()=>{
+
+    if(registerIsSuccess && registerData){
+      toast.success(registerData?.message || "signup succesfull...")
+    }
+    if(registerError){
+      toast.error(registerData?.data.message || "Register failed")
+    }
+    if(loginError){
+      toast.error(loginData?.data.message || "Login failed")
+    }
+    if(loginIsSuccess && loginData){
+      toast.success(loginData?.message || "login succesfull...")
+    }
+
+  },[loginIsLoading , registerIsLoading , loginData , registerData , loginError , registerError])
 
   return (
     <div className="flex items-center justify-center">
@@ -56,7 +98,9 @@ const Login = () => {
                   type="text"
                   name="name"
                   value={signupInput.name}
-                  onChange={(e)=>{handleInputChange(e,"signup")}}
+                  onChange={(e) => {
+                    handleInputChange(e, "signup");
+                  }}
                   placeholder="eg. adeed khan"
                   required
                 />
@@ -67,7 +111,9 @@ const Login = () => {
                   type="text"
                   name="email"
                   value={signupInput.email}
-                  onChange={(e)=>{handleInputChange(e,"signup")}}
+                  onChange={(e) => {
+                    handleInputChange(e, "signup");
+                  }}
                   placeholder="eg. adeedkhan0786@gmail.com"
                 />
               </div>
@@ -77,11 +123,26 @@ const Login = () => {
                   type="text"
                   name="password"
                   value={signupInput.password}
-                  onChange={(e)=>{handleInputChange(e,"signup")}}
+                  onChange={(e) => {
+                    handleInputChange(e, "signup");
+                  }}
                   placeholder="eg. xyz"
                 />
               </div>
-              <Button onClick={()=>{handleSubmit("signup")}} className="my-1">SignUp</Button>
+              <Button
+              disabled={registerIsLoading}
+                onClick={() => {
+                  handleSubmit("signup");
+                }}
+                className="my-1"
+              >
+                {
+                  registerIsLoading?(<>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+                Please wait
+                </>):"SignUp"
+                }
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -96,8 +157,11 @@ const Login = () => {
                 <Label htmlFor="email">Email</Label>
                 <Input
                   type="text"
-                  name="email" value={loginInput.email}
-                  onChange={(e)=>{handleInputChange(e,"login")}}
+                  name="email"
+                  value={loginInput.email}
+                  onChange={(e) => {
+                    handleInputChange(e, "login");
+                  }}
                   placeholder="eg. adeedkhan0786@gmail.com"
                 />
               </div>
@@ -105,12 +169,27 @@ const Login = () => {
                 <Label htmlFor="Password">Password</Label>
                 <Input
                   type="text"
-                  name="password" value={loginInput.password}
-                  onChange={(e)=>{handleInputChange(e,"login")}}
+                  name="password"
+                  value={loginInput.password}
+                  onChange={(e) => {
+                    handleInputChange(e, "login");
+                  }}
                   placeholder="eg. xyz"
                 />
               </div>
-              <Button onClick={()=>{handleSubmit("login")}} className="my-1">Login</Button>
+              <Button
+              disabled={loginIsLoading}
+                onClick={() => {
+                  handleSubmit("login");
+                }}
+                className="my-1"
+              >
+                {
+                loginIsLoading?(<>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+                Please wait
+                </>):"Login"}
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
