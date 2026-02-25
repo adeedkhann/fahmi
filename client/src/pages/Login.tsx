@@ -15,9 +15,12 @@ import {
 } from "@/features/api/authApi";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const Login = () => {
+
+  const navigate = useNavigate()
   const [loginInput, setLoginInput] = useState({ email: "", password: "" });
   const [signupInput, setSignupInput] = useState({
     name: "",
@@ -70,13 +73,14 @@ const Login = () => {
       toast.error(loginData?.data.message || "Login failed")
     }
     if(loginIsSuccess && loginData){
+      navigate("/")
       toast.success(loginData?.message || "login succesfull...")
     }
 
   },[loginIsLoading , registerIsLoading , loginData , registerData , loginError , registerError])
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center mt-40">
       <Tabs
         defaultValue="SignUp"
         className="w-[400px] flex item-center justify-center"
