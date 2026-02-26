@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import MainLayout from "./layout/MainLayout"
 import HeroSection from "./pages/student/HeroSection"
 import Courses from "./pages/student/Courses"
+import MyLearning from "./pages/student/MyLearning"
 
 function App() {
 
@@ -27,6 +28,9 @@ function App() {
                 {
                     path:"login",
                     element:<Login/>
+                },{
+                    path:"MyLearning",
+                    element:<MyLearning/>
                 }
             ]
         }

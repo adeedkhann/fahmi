@@ -23,9 +23,11 @@ import {
   SheetTrigger,
 } from "./ui/sheet.tsx";
 import { Separator } from "radix-ui";
+import { Link, useNavigate } from "react-router-dom";
 function Navbar() {
   const { setTheme } = useTheme();
   const user = true;
+  const navigate = useNavigate();
 
   return (
     <div className="fixed z-10 top-0 w-screen h-13 dark:bg-[#010101] bg-white border-b dark:border">
@@ -49,7 +51,7 @@ function Navbar() {
                 <DropdownMenuContent>
                   <DropdownMenuGroup>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuItem>My learning</DropdownMenuItem>
+                    <Link to="/MyLearning"><DropdownMenuItem>My learning</DropdownMenuItem></Link>
                     <DropdownMenuItem>Edit Profile</DropdownMenuItem>
                     <DropdownMenuItem>Dashboard</DropdownMenuItem>
                   </DropdownMenuGroup>

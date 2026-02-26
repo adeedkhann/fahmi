@@ -22,8 +22,8 @@ function Courses() {
                     <CourseSkeleton key={index} />
                 ))
             ) : (
-                courses.map((item)=>(
-                    <Course/>
+                courses.map((item , index)=>(
+                    <Course key={index}/>
                 ))
             )}
         </div>
