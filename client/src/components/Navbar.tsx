@@ -52,7 +52,7 @@ function Navbar() {
                   <DropdownMenuGroup>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <Link to="/MyLearning"><DropdownMenuItem>My learning</DropdownMenuItem></Link>
-                    <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+                    <DropdownMenuItem><Link to="/profile">Edit Profile</Link></DropdownMenuItem>
                     <DropdownMenuItem>Dashboard</DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuGroup>

@@ -5,6 +5,7 @@ import MainLayout from "./layout/MainLayout"
 import HeroSection from "./pages/student/HeroSection"
 import Courses from "./pages/student/Courses"
 import MyLearning from "./pages/student/MyLearning"
+import Profile from "./pages/student/Profile"
 
 function App() {
 
@@ -31,6 +32,10 @@ function App() {
                 },{
                     path:"MyLearning",
                     element:<MyLearning/>
+                }
+                ,{
+                    path:"profile",
+                    element:<Profile/>
                 }
             ]
         }
